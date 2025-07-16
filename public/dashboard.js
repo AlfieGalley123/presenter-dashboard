@@ -1,8 +1,6 @@
-// === Firebase App Import ===
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
 import { getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
 
-// === Firebase Config ===
 const firebaseConfig = {
   apiKey: "AIzaSyD0vwFXxvBSeKO7nwM7R23vAZhWbhzoeCE",
   authDomain: "presenter-dashboard.firebaseapp.com",
@@ -13,59 +11,46 @@ const firebaseConfig = {
   measurementId: "G-BBEHVF4C69"
 };
 
-// === Initialize Firebase ===
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// === Handle Presenter Sign-In ===
-document.getElementById('signin-form').addEventListener('submit', async (e) => {
+// Sign-in form listener
+document.getElementById('signin-form').addEventListener('submit', async e => {
   e.preventDefault();
   const name = document.getElementById('name').value;
   const show = document.getElementById('show').value;
 
-  try {
-    await addDoc(collection(db, 'presenters'), {
-      name,
-      show: show || 'Untitled Show',
-      time: new Date().toLocaleTimeString()
-    });
-    document.getElementById('signin-form').reset();
-  } catch (error) {
-    console.error("Error signing in:", error);
-  }
+  await addDoc(collection(db, 'presenters'), {
+    name,
+    show: show || 'Untitled Show',
+    time: new Date().toLocaleTimeString()
+  });
+
+  e.target.reset();
 });
 
-// === Listen for Presenters in Realtime ===
-function listenForPresenters() {
-  const q = query(collection(db, 'presenters'), orderBy('time', 'desc'), limit(5));
-  onSnapshot(q, snapshot => {
-    const list = document.getElementById('presenter-list');
-    list.innerHTML = '';
-    snapshot.forEach(doc => {
-      const p = doc.data();
-      const li = document.createElement('li');
-      li.textContent = `${p.name} – ${p.show} (signed in at ${p.time})`;
-      list.appendChild(li);
-    });
+// Listen for presenters
+const presenterList = document.getElementById('presenter-list');
+const qPresenters = query(collection(db, 'presenters'), orderBy('time', 'desc'), limit(5));
+onSnapshot(qPresenters, snapshot => {
+  presenterList.innerHTML = '';
+  snapshot.forEach(doc => {
+    const p = doc.data();
+    const li = document.createElement('li');
+    li.textContent = `${p.name} – ${p.show} (signed in at ${p.time})`;
+    presenterList.appendChild(li);
   });
-}
+});
 
-// === Listen for Incoming Messages in Realtime ===
-function listenForMessages() {
-  const q = query(collection(db, 'messages'), orderBy('time', 'desc'), limit(10));
-  onSnapshot(q, snapshot => {
-    const list = document.getElementById('message-list');
-    list.innerHTML = '';
-    snapshot.forEach(doc => {
-      const m = doc.data();
-      const li = document.createElement('li');
-      li.className = 'message';
-      li.innerHTML = `<strong>${m.from}:</strong> ${m.body}<br><small>${new Date(m.time).toLocaleTimeString()}</small>`;
-      list.appendChild(li);
-    });
+// Listen for messages
+const messageList = document.getElementById('message-list');
+const qMessages = query(collection(db, 'messages'), orderBy('time', 'desc'), limit(10));
+onSnapshot(qMessages, snapshot => {
+  messageList.innerHTML = '';
+  snapshot.forEach(doc => {
+    const m = doc.data();
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${m.from}:</strong> ${m.body} <br><small>${new Date(m.time).toLocaleTimeString()}</small>`;
+    messageList.appendChild(li);
   });
-}
-
-// === Start listeners ===
-listenForPresenters();
-listenForMessages();
+});
