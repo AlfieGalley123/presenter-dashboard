@@ -1,0 +1,27 @@
+{
+  "name": "presenter-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieGalley123/presenter-dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlfieGalley123/presenter-dashboard/issues"
+  },
+  "homepage": "https://github.com/AlfieGalley123/presenter-dashboard#readme",
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.11.1"
+  }
+}
