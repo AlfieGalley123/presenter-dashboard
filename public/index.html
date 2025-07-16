@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Essex Estuary Studio Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <h1>🎙️ Essex Estuary Presenter Panel</h1>
+
+  <section id="signin">
+    <h2>Presenter Sign-In</h2>
+    <form id="signin-form">
+      <input type="text" id="name" placeholder="Your name" required />
+      <input type="text" id="show" placeholder="Show title" />
+      <button type="submit">Sign In</button>
+    </form>
+  </section>
+
+  <section id="presenters">
+    <h2>Current Presenters</h2>
+    <ul id="presenter-list"></ul>
+  </section>
+
+  <section id="sms-feed">
+    <h2>📩 Studio Text Messages</h2>
+    <ul id="message-list"></ul>
+  </section>
+
+  <script src="/dashboard.js"></script>
+</body>
+</html>
